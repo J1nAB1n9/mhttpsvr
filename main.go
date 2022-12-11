@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"mhttpsvr/middleware"
 	"mhttpsvr/router"
 	"net/http"
 )
@@ -14,9 +15,11 @@ func HelloMsg(w http.ResponseWriter ,r *http.Request)  {
 
 func main() {
 	fmt.Println("Hello World")
-	// http.HandleFunc("/hello",HelloMsg)
 	var r router.Router
-	err := http.ListenAndServe(":8000",&r)
+	var l middleware.Logger
+	l.InitLogger(&r)
+
+	err := http.ListenAndServe(":8000",&l)
 	if err != nil {
 		fmt.Println(err)
 	}
