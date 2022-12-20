@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"mhttpsvr/router"
+	"github.com/gorilla/mux"
+	"github.com/urfave/negroni"
 	"net/http"
 )
 
@@ -23,5 +24,10 @@ func main() {
 	//	fmt.Println(err)
 	//}
 
-	http.ListenAndServe(":8000",router.GetRouter())
+	// http.ListenAndServe(":8000",router.GetRouter())
+
+	r := mux.NewRouter()
+	n := negroni.Classic()
+	n.UseHandler(r)
+	http.ListenAndServe(":8000",n)
 }
