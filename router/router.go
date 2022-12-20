@@ -46,3 +46,12 @@ func GetRouter() *mux.Router {
 }
 
 //func (m *MRouter)
+
+var rrouter *mux.Router
+func GetMuxRouter() *mux.Router {
+	if rrouter == nil {
+		rrouter = mux.NewRouter()
+	}
+
+	return rrouter
+}

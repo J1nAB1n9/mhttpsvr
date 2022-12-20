@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/urfave/negroni"
+	"mhttpsvr/middleware"
 	"net/http"
 )
 
@@ -25,9 +24,6 @@ func main() {
 	//}
 
 	// http.ListenAndServe(":8000",router.GetRouter())
-
-	r := mux.NewRouter()
-	n := negroni.Classic()
-	n.UseHandler(r)
-	http.ListenAndServe(":8000",n)
+	middleware.InitMiddleware()
+	http.ListenAndServe(":8000",middleware.Middleware)
 }
