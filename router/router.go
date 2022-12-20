@@ -28,10 +28,21 @@ type MRouter struct {
 	r *mux.Router
 }
 
-func GetRouter() MRouter {
+func GetRouter() *mux.Router {
 	var router MRouter
 	router.r = mux.NewRouter()
-	return router
+	// http://127.0.0.1:8000/users/asd
+	router.r.HandleFunc("/users/{user:[a-z]+}", func(w http.ResponseWriter, request *http.Request) {
+		user := mux.Vars(request)["user"]
+		fmt.Fprint(w,user)
+	}).Methods("GET")
+
+	// http://127.0.0.1:8000/test/才可以访问成功，而http://127.0.0.1:8000/test会失败
+	// 因为github.com/gorilla/mux完全正则
+	router.r.HandleFunc("/test/", func(w http.ResponseWriter, request *http.Request) {
+		fmt.Fprint(w,mux.Vars(request))
+	}).Methods("GET")
+	return router.r
 }
 
 //func (m *MRouter)
