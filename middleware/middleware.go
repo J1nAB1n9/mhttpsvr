@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"github.com/urfave/negroni"
 	"log"
 	"mhttpsvr/router"
@@ -31,3 +32,15 @@ func InitMiddleware() {
 
 	Middleware.UseHandler(router.GetMuxRouter())
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// firstDIY 实现的是 negroni.Handler ,任何可以通过negroni包的use方法存进栈里
+type firstDIY struct {
+}
+
+// 这个方法是到negroni包里拷贝出来的
+func (f *firstDIY) ServeHTTP(rw http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+	fmt.Println("Hello this is first DIY Middleware")
+	next(rw,r)
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
