@@ -30,6 +30,13 @@ func InitMiddleware() {
 	// negroni.New() 不会创建任何的中间件，除非你往里面传参
 	SimpleMiddleware = negroni.New()
 
+	// 插入验证账号,密码的中间件
+	Middleware.Use(&Auth{
+		UserName: "root",
+		PassWord: "123456",
+	})
+	
+	// 将路由作为中间件插入
 	Middleware.UseHandler(router.GetMuxRouter())
 }
 

@@ -28,6 +28,11 @@ type MRouter struct {
 	r *mux.Router
 }
 
+func Hello(w http.ResponseWriter,r *http.Request){
+	username := r.Context().Value("username").(string)
+	fmt.Fprintf(w,"Hi %s\n",username)
+}
+
 func GetRouter() *mux.Router {
 	var router MRouter
 	router.r = mux.NewRouter()
@@ -42,6 +47,9 @@ func GetRouter() *mux.Router {
 	router.r.HandleFunc("/test/", func(w http.ResponseWriter, request *http.Request) {
 		fmt.Fprint(w,mux.Vars(request))
 	}).Methods("GET")
+
+	// http://127.0.0.1:8000/demo
+	router.r.HandleFunc("/demo", Hello).Methods("GET")
 	return router.r
 }
 
@@ -51,6 +59,7 @@ var rrouter *mux.Router
 func GetMuxRouter() *mux.Router {
 	if rrouter == nil {
 		rrouter = mux.NewRouter()
+		rrouter.HandleFunc("/demo", Hello).Methods("GET")
 	}
 
 	return rrouter
